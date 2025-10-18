@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 import ScrollStack, { ScrollStackItem } from './ScrollStack';
 import courseImage from './img.jpg';
 
@@ -445,8 +446,50 @@ const courseDatabase = {
 };
 
 const CourseRecommendations = () => {
+  const headerRef = useRef(null);
+  const subRef = useRef(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    if (headerRef.current) {
+      tl.fromTo(headerRef.current, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 });
+    }
+    if (subRef.current) {
+      tl.fromTo(subRef.current, { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, '-=0.3');
+    }
+    return () => tl.kill();
+  }, []);
+
   return (
-    <ScrollStack className="course-scroll-stack">
+    <>
+      <div style={{ textAlign: 'center', margin: '24px 0 12px' }}>
+        <h2 
+          ref={headerRef}
+          style={{
+            margin: 0,
+            fontWeight: 900,
+            letterSpacing: '0.02em',
+            fontSize: 'clamp(1.25rem, 4.5vw, 2.25rem)',
+            background: 'var(--gradient)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}
+        >
+          WELCOME TO COURSES, EXPLORE NOW
+        </h2>
+        <p 
+          ref={subRef}
+          style={{
+            marginTop: 8,
+            color: 'var(--muted)'
+          }}
+        >
+          Scroll to explore curated learning experiences.
+        </p>
+      </div>
+
+      <ScrollStack className="course-scroll-stack">
       <ScrollStackItem itemClassName="welcome-card">
         <h2>Welcome to Courses</h2>
         <p>Scroll to explore curated learning experiences.</p>
@@ -473,6 +516,7 @@ const CourseRecommendations = () => {
         <img src={courseImage} alt="Course 1" />
       </ScrollStackItem>
     </ScrollStack>
+    </>
   );
 };
 export default CourseRecommendations;

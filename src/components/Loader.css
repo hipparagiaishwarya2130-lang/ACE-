@@ -23,8 +23,8 @@
 .loader-logo {
   margin-bottom: 40px;
   opacity: 0;
-  transform: scale(0.5) translateY(-50px);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0.8) translateY(-20px);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .loader-logo.animate {
@@ -37,8 +37,8 @@
   font-weight: 800;
   color: #ffffff;
   letter-spacing: 8px;
-  text-shadow: 0 0 30px rgba(108, 140, 255, 0.5);
-  animation: logoPulse 2s ease-in-out infinite;
+  text-shadow: 0 0 20px rgba(108, 140, 255, 0.4);
+  animation: logoPulse 3s ease-in-out infinite;
 }
 
 .words-container {
@@ -55,21 +55,21 @@
   font-weight: 600;
   color: #ffffff;
   opacity: 0;
-  transform: translateX(-100px) rotateY(-90deg);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(30px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   letter-spacing: 2px;
-  text-shadow: 0 0 20px rgba(108, 140, 255, 0.3);
+  text-shadow: 0 0 15px rgba(108, 140, 255, 0.2);
 }
 
 .word.visible {
   opacity: 1;
-  transform: translateX(0) rotateY(0deg);
+  transform: translateY(0);
 }
 
 .word.current {
   color: #6c8cff;
-  text-shadow: 0 0 30px rgba(108, 140, 255, 0.8);
-  transform: scale(1.1) translateX(0) rotateY(0deg);
+  text-shadow: 0 0 25px rgba(108, 140, 255, 0.6);
+  transform: translateY(0) scale(1.05);
 }
 
 .loader-subtitle {
@@ -77,8 +77,8 @@
   color: #a6b0c3;
   margin-bottom: 40px;
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s ease-out;
+  transform: translateY(20px);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   font-weight: 400;
   letter-spacing: 0.5px;
 }
@@ -90,14 +90,14 @@
 
 .loading-bar {
   width: 200px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 2px;
   margin: 0 auto;
   overflow: hidden;
   opacity: 0;
   transform: scaleX(0);
-  transition: all 0.6s ease-out;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .loading-bar.animate {
@@ -110,7 +110,7 @@
   background: linear-gradient(90deg, #6c8cff, #17d2c2);
   border-radius: 2px;
   width: 0%;
-  animation: barProgress 3s ease-out forwards;
+  animation: barProgress 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 /* Background Animation - Subtle */
@@ -169,11 +169,11 @@
 @keyframes logoPulse {
   0%, 100% { 
     transform: scale(1);
-    text-shadow: 0 0 30px rgba(108, 140, 255, 0.5);
+    text-shadow: 0 0 20px rgba(108, 140, 255, 0.4);
   }
   50% { 
-    transform: scale(1.05);
-    text-shadow: 0 0 40px rgba(23, 210, 194, 0.7);
+    transform: scale(1.02);
+    text-shadow: 0 0 25px rgba(23, 210, 194, 0.5);
   }
 }
 
@@ -249,15 +249,15 @@
   }
   
   .logo-text {
-    font-size: 2.5rem;
-    letter-spacing: 4px;
+    font-size: 0.5rem;
+    letter-spacing: 10px;
   }
   
   .loader-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.45rem;
   }
   
   .loading-bar {
-    width: 120px;
+    width: 50px;
   }
 }

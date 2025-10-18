@@ -3587,3 +3587,28 @@ html {
     gap: 10px;
   }
 }
+
+/* Cognitive Hero and Animated Buttons */
+.cognitive-hero { padding: 48px 0 24px; background: radial-gradient(900px 600px at 20% -100px, rgba(108,140,255,0.20), transparent), radial-gradient(700px 500px at 120% 0%, rgba(23,210,194,0.12), transparent); }
+.cognitive-inner { text-align: center; max-width: 860px; margin: 0 auto; }
+.cognitive-title { font-size: 44px; line-height: 1.1; margin: 0 0 12px; font-weight: 800; letter-spacing: -0.5px; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: titleGlow 3.5s ease-in-out infinite; }
+.cognitive-subtitle { color: var(--muted); margin: 0 0 18px; font-size: 18px; }
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btnAnimated { position: relative; transform: translateY(0); transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease; }
+.btnAnimated:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0,0,0,0.35); filter: brightness(1.05); }
+.btnAnimated:active { transform: translateY(-1px) scale(0.98); }
+.btnPrimary.btnAnimated::after, .btnSecondary.btnAnimated::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); transform: translateX(-100%); transition: transform 0.5s ease; border-radius: inherit; pointer-events: none; }
+.btnPrimary.btnAnimated:hover::after, .btnSecondary.btnAnimated:hover::after { transform: translateX(100%); }
+
+@keyframes titleGlow { 0%,100% { text-shadow: 0 0 0 rgba(108,140,255,0); } 50% { text-shadow: 0 0 24px rgba(108,140,255,0.25); } }
+
+/* Subtle page-level background animation on Login page */
+.login-page { position: relative; }
+.login-page::before { content: ''; position: fixed; left: 0; right: 0; top: 0; bottom: 0; pointer-events: none; background: radial-gradient(600px 400px at 80% 10%, rgba(108,140,255,0.12), transparent), radial-gradient(500px 350px at 10% 80%, rgba(23,210,194,0.10), transparent); animation: bgFloat 16s ease-in-out infinite alternate; z-index: -1; }
+
+@keyframes bgFloat { 0% { transform: translate3d(0,0,0) scale(1); filter: saturate(1); } 100% { transform: translate3d(0,-10px,0) scale(1.02); filter: saturate(1.05); } }
+
+@media (max-width: 768px) {
+  .cognitive-title { font-size: 36px; }
+  .cognitive-subtitle { font-size: 16px; }
+}

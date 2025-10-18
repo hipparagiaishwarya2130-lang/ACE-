@@ -1,138 +1,80 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
-gsap.registerPlugin(ScrollTrigger);
+import Stepper, { Step } from '../components/Stepper';
 
 function Signup() {
-  const cardRef = useRef(null);
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const card = cardRef.current;
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.fromTo(card, { y: 28, opacity: 0, rotateX: -8 }, { y: 0, opacity: 1, rotateX: 0, duration: 0.75 });
-    tl.fromTo(card.querySelectorAll('[data-stagger]'), { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.08 }, '<0.05');
-
-    const featureItems = document.querySelectorAll('[data-feature-item]');
-    featureItems.forEach((el) => {
-      gsap.fromTo(
-        el,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse'
-          }
-        }
-      );
-    });
-  }, []);
-
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      const userData = {
-        name: name,
-        email: email,
-        level: 'Beginner',
-        streak: 0
-      };
-      
-      login(userData);
-      navigate('/features');
-      setIsLoading(false);
-    }, 1000);
+  const handleComplete = () => {
+    const emailValid = /.+@.+\..+/.test(email);
+    if (!emailValid) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    if (!password || password.length < 6) {
+      alert('Password must be at least 6 characters.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return;
+    }
+    const userData = { name: email.split('@')[0] || 'User', email, level: 'Beginner', streak: 0 };
+    login(userData);
+    navigate('/features');
   };
 
   return (
-    <>
-      <div className="authWrap">
-        <form ref={cardRef} className="authCard" onSubmit={handleSignup}>
-          <h2 className="authTitle">Create your account</h2>
-          <p className="authSubtitle">Personalized learning, curated content, and interview simulations await.</p>
-
-          <div className="field" data-stagger>
-            <label htmlFor="name">Full Name</label>
+    <section className="section">
+      <div className="container">
+        <Stepper
+          initialStep={1}
+          onStepChange={(step) => {
+            console.log(step);
+          }}
+          onFinalStepCompleted={handleComplete}
+          backButtonText="Previous"
+          nextButtonText="Next"
+        >
+          <Step>
+            <h2>Enter your email</h2>
             <input 
-              id="name" 
-              type="text" 
-              className="input" 
-              placeholder="Jane Doe"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="field" data-stagger>
-            <label htmlFor="email">Email</label>
-            <input 
-              id="email" 
               type="email" 
-              className="input" 
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              placeholder="you@example.com" 
             />
-          </div>
-          <div className="field" data-stagger>
-            <label htmlFor="password">Password</label>
+          </Step>
+          <Step>
+            <h2>Create a password</h2>
             <input 
-              id="password" 
               type="password" 
-              className="input" 
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              placeholder="At least 6 characters" 
             />
-          </div>
-
-          <div className="authActions" data-stagger>
-            <button 
-              className="btn btnPrimary" 
-              type="submit"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Creating account...' : 'Sign up'}
-            </button>
-            <Link to="/login" className="link">I already have an account</Link>
-          </div>
-        </form>
+          </Step>
+          <Step>
+            <h2>Confirm password</h2>
+            <input 
+              type="password" 
+              value={confirmPassword} 
+              onChange={(e) => setConfirmPassword(e.target.value)} 
+              placeholder="Re-enter your password" 
+            />
+          </Step>
+          <Step>
+            <h2>Finish</h2>
+            <p>Click Complete to create your account.</p>
+          </Step>
+        </Stepper>
       </div>
-      <section className="section">
-        <div className="container grid-3">
-          <div className="card" data-feature-item>
-            <h3>Curated Content</h3>
-            <p>Learn from high‑quality, organized materials that fit your goals.</p>
-          </div>
-          <div className="card" data-feature-item>
-            <h3>AI Personalization</h3>
-            <p>Recommendations that adapt to your progress and proficiency.</p>
-          </div>
-          <div className="card" data-feature-item>
-            <h3>Interview Proctoring</h3>
-            <p>Practice real‑world interviews and get actionable feedback.</p>
-          </div>
-        </div>
-      </section>
-    </>
+    </section>
   );
 }
 

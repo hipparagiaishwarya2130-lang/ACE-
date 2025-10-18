@@ -124,8 +124,8 @@ function AppContent() {
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={isAuthenticated ? <Navigate to="/features" replace /> : <Login />} />
-          <Route path="/signup" element={isAuthenticated ? <Navigate to="/features" replace /> : <Signup />} />
+          <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} />
+          <Route path="/signup" element={isAuthenticated ? <Navigate to="/" replace /> : <Signup />} />
           
           {/* Protected routes - require authentication */}
           <Route path="/about" element={isAuthenticated ? <About /> : <Navigate to="/login" replace />} />

@@ -3,14 +3,19 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Home.css';
+import { useAuth } from '../context/AuthContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 function Home() {
+  const { isAuthenticated } = useAuth();
   const heroRef = useRef(null);
   const sectionsRef = useRef([]);
   const heroMockRef = useRef(null);
   const cardsRef = useRef([]);
+  const bannerRef = useRef(null);
+  const bannerBtnsRef = useRef(null);
+  const heroTitleRef = useRef(null);
   sectionsRef.current = [];
 
   const addToSectionsRef = (el) => {
@@ -28,12 +33,23 @@ function Home() {
   useEffect(() => {
     const hero = heroRef.current;
     const heroMock = heroMockRef.current;
+    const banner = bannerRef.current;
+    const bannerBtns = bannerBtnsRef.current ? bannerBtnsRef.current.querySelectorAll('a, button') : [];
     
     // Check if device is mobile
     const isMobile = window.innerWidth <= 768;
     
     // Reduce motion for users who prefer it
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Banner intro animations (appear before hero)
+    if (banner) {
+      const bannerTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      bannerTl.fromTo(banner, { y: -18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 });
+      if (bannerBtns && bannerBtns.length) {
+        bannerTl.fromTo(bannerBtns, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, stagger: 0.08 }, '<0.05');
+      }
+    }
 
     // Intro animation - simplified for mobile
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -42,6 +58,28 @@ function Home() {
       { y: isMobile ? 20 : 30, opacity: 0 },
       { y: 0, opacity: 1, duration: isMobile ? 0.6 : 0.9, stagger: isMobile ? 0.08 : 0.12 }
     );
+
+    // Character-level reveal for main hero title (desktop only)
+    if (!prefersReducedMotion && heroTitleRef.current) {
+      const titleEl = heroTitleRef.current;
+      const raw = titleEl.textContent;
+      titleEl.innerHTML = '';
+      raw.split('').forEach((ch) => {
+        const s = document.createElement('span');
+        s.textContent = ch === ' ' ? '\u00A0' : ch;
+        s.style.display = 'inline-block';
+        s.style.opacity = '0';
+        s.style.transform = 'translateY(20px)';
+        titleEl.appendChild(s);
+      });
+      gsap.to(titleEl.children, {
+        opacity: 1,
+        y: 0,
+        duration: 0.04,
+        stagger: 0.02,
+        ease: 'power2.out'
+      });
+    }
 
     // Hero mock animations - reduced for mobile performance
     if (heroMock && !prefersReducedMotion) {
@@ -187,7 +225,7 @@ function Home() {
       }
     });
 
-    // Staggered card animations - mobile optimized
+    // Staggered card animations - mobile optimized + hover tilt
     cardsRef.current.forEach((card, index) => {
       if (prefersReducedMotion) {
         // Simple fade for reduced motion
@@ -231,27 +269,28 @@ function Home() {
         );
       }
 
-      // Card hover effect - desktop only
+      // Card hover 3D tilt - desktop only
       if (!isMobile && !prefersReducedMotion) {
-        card.addEventListener('mouseenter', () => {
-          gsap.to(card, { 
-            y: -10, 
-            scale: 1.05, 
-            duration: 0.3, 
-            ease: 'power2.out' 
-          });
+        const reset = () => gsap.to(card, { rotateX: 0, rotateY: 0, y: 0, scale: 1, duration: 0.3, ease: 'power2.out' });
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const cx = e.clientX - rect.left;
+          const cy = e.clientY - rect.top;
+          const rx = ((cy / rect.height) - 0.5) * -8; // tilt X
+          const ry = ((cx / rect.width) - 0.5) * 12;  // tilt Y
+          gsap.to(card, { rotateX: rx, rotateY: ry, y: -6, scale: 1.03, duration: 0.2, ease: 'power2.out' });
         });
-
-        card.addEventListener('mouseleave', () => {
-          gsap.to(card, { 
-            y: 0, 
-            scale: 1, 
-            duration: 0.3, 
-            ease: 'power2.out' 
-          });
-        });
+        card.addEventListener('mouseleave', reset);
+        card.addEventListener('mouseenter', () => gsap.to(card, { y: -6, scale: 1.03, duration: 0.2 }));
       }
     });
+
+    // Floating animation for feature icons
+    if (!prefersReducedMotion) {
+      document.querySelectorAll('[data-feature-icon]')?.forEach((icon, i) => {
+        gsap.to(icon, { y: -6, repeat: -1, yoyo: true, duration: 1.6 + i * 0.1, ease: 'power1.inOut' });
+      });
+    }
 
     // Text reveal animation - simplified for mobile
     if (!prefersReducedMotion) {
@@ -363,6 +402,34 @@ function Home() {
 
   return (
     <>
+      {/* ACE-AI Cognitive Banner */}
+      <section ref={bannerRef} className="cognitive-hero section">
+        <div className="container">
+          <div className="cognitive-inner">
+            <h1 className="cognitive-title">ACE-AI BASED COGNITIVE EDUCATION</h1>
+            <p className="cognitive-subtitle">Adaptive, personalized, and engaging learning powered by AI.</p>
+            <div ref={bannerBtnsRef} className="hero-actions">
+              {isAuthenticated ? (
+                <div style={{
+                  fontWeight: 800,
+                  letterSpacing: '0.5px',
+                  fontSize: '1.25rem',
+                  padding: '10px 16px',
+                  borderRadius: '10px',
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,255,255,0.12)'
+                }}>WELCOME BACK</div>
+              ) : (
+                <>
+                  <Link to="/login" className="btn btnPrimary btnAnimated" aria-label="Go to Login">Login</Link>
+                  <Link to="/signup" className="btn btnSecondary btnAnimated" aria-label="Go to Signup">Sign Up</Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section 
         ref={heroRef} 
         style={{
@@ -385,6 +452,7 @@ function Home() {
         >
           <div style={{ maxWidth: '540px' }}>
             <h1 
+              ref={heroTitleRef}
               data-hero-fade
               style={{
                 fontSize: '2.5rem',
@@ -418,40 +486,54 @@ function Home() {
                 flexWrap: 'wrap'
               }}
             >
-              <Link 
-                to="/signup" 
-                style={{
-                  padding: '12px 24px',
-                  borderRadius: '8px',
-                  fontWeight: '600',
-                  transition: 'all 0.2s ease',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'var(--gradient)',
-                  color: 'white',
-                  border: 'none'
-                }}
-              >
-                Get Started
-              </Link>
-              <Link 
-                to="/login" 
-                style={{
-                  padding: '12px 24px',
-                  borderRadius: '8px',
-                  fontWeight: '600',
-                  transition: 'all 0.2s ease',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  color: 'var(--text)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)'
-                }}
-              >
-                I already have an account
-              </Link>
+              {isAuthenticated ? (
+                <div style={{
+                  fontWeight: 800,
+                  letterSpacing: '0.5px',
+                  fontSize: '1.15rem',
+                  padding: '10px 16px',
+                  borderRadius: '10px',
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,255,255,0.12)'
+                }}>Ace Your Classes, Own Your Future</div>
+              ) : (
+                <>
+                  <Link 
+                    to="/signup" 
+                    style={{
+                      padding: '12px 24px',
+                      borderRadius: '8px',
+                      fontWeight: '600',
+                      transition: 'all 0.2s ease',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: 'var(--gradient)',
+                      color: 'white',
+                      border: 'none'
+                    }}
+                  >
+                    Get Started
+                  </Link>
+                  <Link 
+                    to="/login" 
+                    style={{
+                      padding: '12px 24px',
+                      borderRadius: '8px',
+                      fontWeight: '600',
+                      transition: 'all 0.2s ease',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: 'rgba(255, 255, 255, 0.08)',
+                      color: 'var(--text)',
+                      border: '1px solid rgba(255, 255, 255, 0.12)'
+                    }}
+                  >
+                    I already have an account
+                  </Link>
+                </>
+              )}
             </div>
 
             <div 
@@ -628,7 +710,7 @@ function Home() {
                 color: 'white',
                 fontWeight: 'bold',
                 fontSize: '24px'
-              }}>M</div>
+              }} data-feature-icon>A</div>
               <h3 style={{
                 marginTop: '0',
                 marginBottom: '16px',
@@ -669,7 +751,7 @@ function Home() {
                 color: 'white',
                 fontWeight: 'bold',
                 fontSize: '24px'
-              }}>P</div>
+              }} data-feature-icon>C</div>
               <h3 style={{
                 marginTop: '0',
                 marginBottom: '16px',
@@ -710,7 +792,7 @@ function Home() {
                 color: 'white',
                 fontWeight: 'bold',
                 fontSize: '24px'
-              }}>S</div>
+              }} data-feature-icon>E</div>
               <h3 style={{
                 marginTop: '0',
                 marginBottom: '16px',
