@@ -13,10 +13,12 @@ import Footer from './components/Footer';
 import DomainSelectionPage from './pages/DomainSelectionPage';
 import CourseRecommendations from './components/CourseRecommendations';
 import CourseDetail from './components/CourseDetail';
+import Loader from './components/Loader';
 
 function AppContent() {
   const { isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // (Dashboard removed) Default authenticated landing handled via routes below
 
@@ -42,6 +44,11 @@ function AppContent() {
     document.body.classList.remove('mobile-menu-open');
   };
 
+  // Handle loader completion
+  const handleLoaderComplete = () => {
+    setIsLoading(false);
+  };
+
   // Cleanup body class on component unmount
   useEffect(() => {
     return () => {
@@ -60,6 +67,11 @@ function AppContent() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [mobileMenuOpen]);
+
+  // Show loader while loading
+  if (isLoading) {
+    return <Loader onComplete={handleLoaderComplete} />;
+  }
 
   return (
     <div className="app-shell">
