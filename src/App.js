@@ -14,6 +14,8 @@ import DomainSelectionPage from './pages/DomainSelectionPage';
 import CourseRecommendations from './components/CourseRecommendations';
 import CourseDetail from './components/CourseDetail';
 import Loader from './components/Loader';
+import Team from './pages/Team';
+import TiltedCard from './pages/TiltedCard';
 
 function AppContent() {
   const { isAuthenticated, logout } = useAuth();
@@ -124,6 +126,7 @@ function AppContent() {
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<Home />} />
+          <Route path="/team" element={<Team />} />
           <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} />
           <Route path="/signup" element={isAuthenticated ? <Navigate to="/" replace /> : <Signup />} />
           

@@ -4,7 +4,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Home.css';
 import { useAuth } from '../context/AuthContext';
-
+import EashwarImg from '../Images/Eashwar.jpg';
+import aniImg from '../Images/ani.jpg';
 gsap.registerPlugin(ScrollTrigger);
 
 function Home() {
@@ -423,6 +424,14 @@ function Home() {
                 <>
                   <Link to="/login" className="btn btnPrimary btnAnimated" aria-label="Go to Login">Login</Link>
                   <Link to="/signup" className="btn btnSecondary btnAnimated" aria-label="Go to Signup">Sign Up</Link>
+                  <Link
+                    to="/team"
+                    className="btn btnSecondary btnAnimated"
+                    style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.06)' }}
+                    aria-label="Go to Team Members page"
+                  >
+                    Team Members
+                  </Link>
                 </>
               )}
             </div>
@@ -806,6 +815,76 @@ function Home() {
                 AI‑guided study paths, topic recommendations, progress tracking, and interview simulations that assess technical expertise and communication.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section 
+        id="team-section"
+        ref={addToSectionsRef}
+        style={{
+          padding: '80px 0',
+          position: 'relative'
+        }}
+      >
+        <div style={{
+          width: '100%',
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '0 24px'
+        }}>
+          <h2 style={{
+            fontSize: '2rem',
+            marginBottom: '30px',
+            background: 'var(--gradient)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            textAlign: 'center',
+            display: 'block'
+          }}>Our Team</h2>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+            gap: '20px'
+          }}>
+            {[
+              { name: 'Anirudh K', role: 'Backend Developer', photo: aniImg},
+              { name: 'Aishwarya H', role: 'Frontend Developer', photo:  EashwarImg },
+              { name: 'Eashwar D', role: 'Frontend Developer', photo:  EashwarImg},
+              { name: 'Godeshwari C', role: 'Product Designer', photo:  EashwarImg },
+            ].map((m) => (
+              <div ref={addToCardsRef} key={m.name} style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '16px',
+                padding: '20px',
+                textAlign: 'center', 
+                willChange: 'transform',
+                transformStyle: 'preserve-3d'
+              }}>
+                <div style={{
+                  width: '80px',
+                  height: '80px',
+                  margin: '0 auto 12px',
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  background: 'linear-gradient(135deg, rgba(108, 140, 255, 0.25), rgba(23,210,194,0.25))',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  {m.photo ? (
+                    <img src={m.photo} alt={m.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <span style={{ fontWeight: 700 }}>{m.name.split(' ').map(p => p[0]).join('').slice(0,2)}</span>
+                  )}
+                </div>
+                <div style={{ fontWeight: 700, marginBottom: 4 }}>{m.name}</div>
+                <div style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>{m.role}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

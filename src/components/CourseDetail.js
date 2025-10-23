@@ -24,7 +24,54 @@ const CourseDetail = () => {
       duration: '6 weeks',
       difficulty: 'Beginner',
       instructor: 'Mike Chen',
-      price: '$49'
+      price: '$49',
+      curriculum: {
+        easy: ['Components, props, state', 'Hooks: useState, useEffect', 'Routing with React Router'],
+        intermediate: ['Forms and validation', 'API integration and async data', 'List and key patterns'],
+        advanced: ['Performance optimizations', 'State management patterns', 'Testing with Jest + RTL']
+      }
+    },
+    'backend-basics': {
+      id: 'backend-basics',
+      title: 'Backend Development Fundamentals',
+      description: 'Node.js and Express API fundamentals with authentication and databases.',
+      duration: '10 weeks',
+      difficulty: 'Beginner',
+      instructor: 'Alex Thompson',
+      price: 'Free',
+      curriculum: {
+        easy: ['Node.js basics, npm, modules', 'Express routing and middleware', 'REST fundamentals and Postman'],
+        intermediate: ['Authentication with JWT', 'Databases: MongoDB and PostgreSQL CRUD', 'Error handling and logging'],
+        advanced: ['Rate limiting, caching, security headers', 'Scalability: clustering, load testing', 'CI/CD and deployment basics']
+      }
+    },
+    'fullstack-basics': {
+      id: 'fullstack-basics',
+      title: 'Full Stack Development Bootcamp',
+      description: 'Build complete web applications with React, Next.js, APIs, and databases.',
+      duration: '16 weeks',
+      difficulty: 'Intermediate',
+      instructor: 'Jessica Williams',
+      price: '$299',
+      curriculum: {
+        easy: ['Frontend fundamentals (HTML/CSS/JS)', 'Basic React app with routing', 'Intro to REST APIs'],
+        intermediate: ['Next.js pages, SSR/SSG, API routes', 'State management patterns', 'Database integration (ORM, migrations)'],
+        advanced: ['Auth (JWT/OAuth), role-based access', 'Serverless and edge deployment', 'Performance, caching, observability']
+      }
+    },
+    'ml-basics': {
+      id: 'ml-basics',
+      title: 'Machine Learning Fundamentals',
+      description: 'Python, NumPy, Pandas, modeling with scikit-learn, and evaluation.',
+      duration: '10 weeks',
+      difficulty: 'Beginner',
+      instructor: 'Dr. Anna Patel',
+      price: 'Free',
+      curriculum: {
+        easy: ['Python syntax and NumPy arrays', 'Pandas dataframes and cleaning', 'Basic EDA and visualization'],
+        intermediate: ['Regression and classification with scikit-learn', 'Feature engineering and metrics', 'Train/validation/test splits and cross‑validation'],
+        advanced: ['Intro to neural networks (TensorFlow/Keras)', 'Experiment tracking and model monitoring', 'Deployment basics and inference optimization']
+      }
     }
   };
   
@@ -140,6 +187,38 @@ const CourseDetail = () => {
               color: 'rgba(255, 255, 255, 0.9)'
             }}>Instructor</h3>
             <p>{course.instructor}</p>
+          </div>
+        )}
+
+        {course.curriculum && (
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            borderRadius: '12px',
+            padding: '20px',
+            marginBottom: '24px'
+          }}>
+            <h3 style={{ fontSize: '18px', margin: '0 0 12px', color: 'rgba(255,255,255,0.9)' }}>Curriculum</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px' }}>
+              <div>
+                <h4 style={{ margin: '0 0 6px' }}>Easy</h4>
+                <ul style={{ margin: 0, paddingLeft: 18 }}>
+                  {(course.curriculum.easy || []).map((item, i) => (<li key={i}>{item}</li>))}
+                </ul>
+              </div>
+              <div>
+                <h4 style={{ margin: '12px 0 6px' }}>Intermediate</h4>
+                <ul style={{ margin: 0, paddingLeft: 18 }}>
+                  {(course.curriculum.intermediate || []).map((item, i) => (<li key={i}>{item}</li>))}
+                </ul>
+              </div>
+              <div>
+                <h4 style={{ margin: '12px 0 6px' }}>Advanced</h4>
+                <ul style={{ margin: 0, paddingLeft: 18 }}>
+                  {(course.curriculum.advanced || []).map((item, i) => (<li key={i}>{item}</li>))}
+                </ul>
+              </div>
+            </div>
           </div>
         )}
         
