@@ -419,7 +419,7 @@ function Home() {
                   borderRadius: '10px',
                   background: 'rgba(255,255,255,0.06)',
                   border: '1px solid rgba(255,255,255,0.12)'
-                }}>WELCOME BACK</div>
+                }}>WELCOME </div>
               ) : (
                 <>
                   <Link to="/login" className="btn btnPrimary btnAnimated" aria-label="Go to Login">Login</Link>
@@ -585,6 +585,7 @@ function Home() {
           <div>
             <div 
               ref={heroMockRef} 
+              className="heroMock enhancedHeroMock"
               style={{
                 width: '100%',
                 aspectRatio: '16/9',
@@ -601,23 +602,19 @@ function Home() {
                 background: 'linear-gradient(135deg, rgba(108, 140, 255, 0.1) 0%, rgba(23, 210, 194, 0.1) 100%)'
               }}
             >
-              <div style={{ textAlign: 'center', padding: '20px' }}>
-                <div 
-                  style={{
-                    fontSize: '1.5rem',
-                    fontWeight: '700',
-                    marginBottom: '8px',
-                    background: 'var(--gradient)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
-                  Interactive Learning
-                </div>
-                <div style={{ color: 'var(--muted)', fontSize: '1rem' }}>
-                  AI-powered curriculum
-                </div>
+              <div className="heroParticles" aria-hidden>
+                <span className="heroParticle" />
+                <span className="heroParticle" />
+                <span className="heroParticle" />
+                <span className="heroParticle" />
+                <span className="heroParticle" />
+                <span className="heroParticle" />
+                <span className="heroParticle" />
+                <span className="heroParticle" />
+              </div>
+              <div className="heroMockContent">
+                <div className="heroMockTitle animatedText">Interactive Learning</div>
+                <div className="heroMockSubtitle">AI-powered curriculum</div>
               </div>
             </div>
           </div>

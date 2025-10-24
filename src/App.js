@@ -17,6 +17,72 @@ import Loader from './components/Loader';
 import Team from './pages/Team';
 import TiltedCard from './pages/TiltedCard';
 
+function EnrolledProfile() {
+  const [enrolled, setEnrolled] = useState([]);
+
+  useEffect(() => {
+    try {
+      const data = JSON.parse(localStorage.getItem('enrolledCourses') || '[]');
+      setEnrolled(Array.isArray(data) ? data : []);
+    } catch {
+      setEnrolled([]);
+    }
+  }, []);
+
+  return (
+    <div className="container" style={{ padding: '40px 0' }}>
+      <h1 style={{
+        fontSize: '2rem',
+        marginBottom: '20px',
+        background: 'var(--gradient)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text'
+      }}>My Enrolled Courses</h1>
+
+      {enrolled.length === 0 ? (
+        <div style={{ color: 'var(--muted)' }}>
+          You haven't enrolled in any courses yet.
+          <div style={{ marginTop: 12 }}>
+            <Link to="/courses" className="nav-link" style={{ display: 'inline-block' }}>Browse courses</Link>
+          </div>
+        </div>
+      ) : (
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '16px'
+        }}>
+          {enrolled.map((c) => (
+            <div key={c.id} className="card" style={{ padding: 20 }}>
+              <h3 style={{ margin: '0 0 8px' }}>{c.title}</h3>
+              {c.description && (
+                <p style={{ color: 'var(--muted)', margin: '0 0 12px' }}>
+                  {c.description.length > 140 ? c.description.slice(0, 140) + '…' : c.description}
+                </p>
+              )}
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+                {c.difficulty && (
+                  <span style={{ padding: '6px 10px', background: 'rgba(108,140,255,0.12)', borderRadius: 8, fontSize: 12 }}>{c.difficulty}</span>
+                )}
+                {c.duration && (
+                  <span style={{ padding: '6px 10px', background: 'rgba(108,140,255,0.12)', borderRadius: 8, fontSize: 12 }}>{c.duration}</span>
+                )}
+                {c.price && (
+                  <span style={{ padding: '6px 10px', background: 'rgba(108,140,255,0.12)', borderRadius: 8, fontSize: 12 }}>{c.price}</span>
+                )}
+              </div>
+              <Link to={`/course-detail/${c.id}`} className="nav-link" style={{ display: 'inline-block' }}>
+                Continue
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AppContent() {
   const { isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -109,6 +175,7 @@ function AppContent() {
                 <Link to="/features" className="nav-link" onClick={closeMobileMenu}>Features</Link>
                 <Link to="/interview-practice" className="nav-link" onClick={closeMobileMenu}>AI Interview</Link>
                 <Link to="/courses" className="nav-link" onClick={closeMobileMenu}>Courses</Link>
+                <Link to="/profile" className="nav-link" onClick={closeMobileMenu}>Profile</Link>
                 <button onClick={handleLogout} className="nav-link logout-btn">
                   Logout
                 </button>
@@ -140,6 +207,7 @@ function AppContent() {
           <Route path="/domain-selection" element={isAuthenticated ? <DomainSelectionPage /> : <Navigate to="/login" replace />} />
           <Route path="/course-recommendations" element={isAuthenticated ? <CourseRecommendations /> : <Navigate to="/login" replace />} />
           <Route path="/course-detail/:courseId" element={isAuthenticated ? <CourseDetail /> : <Navigate to="/login" replace />} />
+          <Route path="/profile" element={isAuthenticated ? <EnrolledProfile /> : <Navigate to="/login" replace />} />
           
           {/* Direct routes for main sections */}
           <Route path="/courses" element={isAuthenticated ? <CourseRecommendations /> : <Navigate to="/login" replace />} />
