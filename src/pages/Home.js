@@ -886,7 +886,151 @@ A key highlight of the website is its AI Interview Proctor feature. This smart s
           </div>
         </div>
       </section>
+
+      <section ref={addToSectionsRef} style={{ padding: '80px 0', position: 'relative', background: 'linear-gradient(180deg, rgba(255,255,255,0.02), transparent)' }}>
+        <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '24px', background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Browse Categories</h2>
+          <div className="categories-grid">
+            {[
+              { title: 'AI & ML', link: '/features' },
+              { title: 'Web Development', link: '/courses' },
+              { title: 'Data Science', link: '/features' },
+              { title: 'Cybersecurity', link: '/features' },
+              { title: 'Cloud', link: '/features' },
+              { title: 'Interview Prep', link: '/interview-practice' },
+            ].map((c) => (
+              <Link key={c.title} to={c.link} className="category-card">
+                <div className="category-bg" />
+                <div className="category-title">{c.title}</div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section ref={addToSectionsRef} style={{ padding: '80px 0', position: 'relative' }}>
+        <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '24px', background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Featured Collections</h2>
+          <div className="collections-grid">
+            <Link to="/courses" className="collection-card large">
+              <div className="collection-overlay">
+                <div className="collection-title">Starter Tracks</div>
+                <div className="collection-sub">Kickstart your journey</div>
+              </div>
+            </Link>
+            <Link to="/features" className="collection-card small">
+              <div className="collection-overlay">
+                <div className="collection-title">Skill Boosters</div>
+              </div>
+            </Link>
+            <Link to="/interview-practice" className="collection-card small">
+              <div className="collection-overlay">
+                <div className="collection-title">Mock Interviews</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section ref={addToSectionsRef} style={{ padding: '80px 0', position: 'relative', background: 'radial-gradient(800px at 50% 100%, rgba(108, 140, 255, 0.08), transparent)' }}>
+        <div style={{ width: '100%', maxWidth: '900px', margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '12px', background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Stay in the loop</h2>
+          <p style={{ color: 'var(--muted)', marginBottom: 16 }}>Get new tracks, mock interviews, and learning tips straight to your inbox.</p>
+          <form onSubmit={(e)=> e.preventDefault()} className="newsletter-form">
+            <input aria-label="Email" type="email" required placeholder="Enter your email" />
+            <button type="submit">Subscribe</button>
+          </form>
+          <div className="trust-badges">
+            <span>Secure</span>
+            <span>No spam</span>
+            <span>Unsubscribe anytime</span>
+          </div>
+        </div>
+      </section>
+
     </>
+  );
+}
+
+export function AuthHome() {
+  const [enrolled, setEnrolled] = React.useState([]);
+
+  React.useEffect(() => {
+    try {
+      const data = JSON.parse(localStorage.getItem('enrolledCourses') || '[]');
+      setEnrolled(Array.isArray(data) ? data : []);
+    } catch {
+      setEnrolled([]);
+    }
+  }, []);
+
+  return (
+    <div style={{ padding: '60px 0' }}>
+      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 24, alignItems: 'stretch' }}>
+          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 24 }}>
+            <h1 style={{ fontSize: '2rem', margin: 0, background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Welcome back 👋</h1>
+            <p style={{ color: 'var(--muted)', marginTop: 8 }}>Pick up where you left off or explore new tracks.</p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 16 }}>
+              <Link to="/courses" className="btn btnPrimary btnAnimated" style={{ textAlign: 'center' }}>Browse Courses</Link>
+              <Link to="/interview-practice" className="btn btnGhost" style={{ textAlign: 'center' }}>AI Interview</Link>
+              <Link to="/features" className="btn btnGhost" style={{ textAlign: 'center' }}>Features</Link>
+            </div>
+
+            <div style={{ marginTop: 24 }}>
+              <h3 style={{ margin: '0 0 10px', background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Continue learning</h3>
+              {enrolled.length === 0 ? (
+                <div style={{ color: 'var(--muted)' }}>
+                  You haven't enrolled in any courses yet.
+                  <div style={{ marginTop: 8 }}>
+                    <Link to="/courses" className="nav-link" style={{ display: 'inline-block' }}>Browse courses</Link>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
+                  {enrolled.slice(0, 6).map((c) => (
+                    <Link key={c.id} to={`/course-detail/${c.id}`} className="card" style={{ padding: 16, textDecoration: 'none' }}>
+                      <div style={{ fontWeight: 700, marginBottom: 4, color: 'var(--text)' }}>{c.title}</div>
+                      {c.description && (
+                        <div style={{ color: 'var(--muted)', fontSize: '.95rem' }}>
+                          {c.description.length > 120 ? c.description.slice(0, 120) + '…' : c.description}
+                        </div>
+                      )}
+                      <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+                        {c.difficulty && <span style={{ padding: '6px 10px', background: 'rgba(108,140,255,0.12)', borderRadius: 8, fontSize: 12 }}>{c.difficulty}</span>}
+                        {c.duration && <span style={{ padding: '6px 10px', background: 'rgba(108,140,255,0.12)', borderRadius: 8, fontSize: 12 }}>{c.duration}</span>}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gap: 16 }}>
+            <div style={{ background: 'linear-gradient(180deg, rgba(23,210,194,0.08), rgba(108,140,255,0.08))', border: '1px solid rgba(108,140,255,0.25)', borderRadius: 16, padding: 20 }}>
+              <div style={{ fontWeight: 800, marginBottom: 6 }}>Quick actions</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <Link to="/domain-selection" className="btn btnGhost" style={{ textAlign: 'center' }}>Choose Domain</Link>
+                <Link to="/profile" className="btn btnGhost" style={{ textAlign: 'center' }}>My Profile</Link>
+                <Link to="/assessment" className="btn btnGhost" style={{ textAlign: 'center' }}>Assessment</Link>
+                <Link to="/career-guidance" className="btn btnGhost" style={{ textAlign: 'center' }}>Career Guidance</Link>
+              </div>
+            </div>
+
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 20 }}>
+              <div style={{ fontWeight: 800, marginBottom: 6 }}>Recommendations</div>
+              <p style={{ color: 'var(--muted)', marginTop: 0 }}>Explore popular tracks and practice sets tailored for you.</p>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <Link to="/courses" className="btn btnPrimary btnAnimated">All Courses</Link>
+                <Link to="/interview-practice" className="btn btnGhost">Mock Interview</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import './App.css';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Home from './pages/Home';
+import Home, { AuthHome } from './pages/Home';
 import About from './pages/About';
 import Features from './pages/Features';
 import InterviewPractice from './pages/InterviewPractice';
@@ -145,7 +145,7 @@ function AppContent() {
     <div className="app-shell">
       <header className="app-header">
         <div className="container header-inner">
-          <Link to={isAuthenticated ? "/features" : "/"} className="brand" aria-label="AI E-Learning Home">
+          <Link to="/" className="brand" aria-label="AI E-Learning Home">
             <span className="brand-logo" aria-hidden>AI</span>
             <span className="brand-text">E‑Learning & Proctor</span>
           </Link>
@@ -194,8 +194,8 @@ function AppContent() {
       </header>
       <main className="app-main">
         <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Home />} />
+          {/* Public + Auth Home */}
+          <Route path="/" element={isAuthenticated ? <AuthHome /> : <Home />} />
           <Route path="/team" element={<Team />} />
           <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} />
           <Route path="/signup" element={isAuthenticated ? <Navigate to="/" replace /> : <Signup />} />
