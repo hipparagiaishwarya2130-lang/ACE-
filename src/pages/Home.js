@@ -652,8 +652,9 @@ function Home() {
             lineHeight: '1.6'
           }}>
             <p>
-              This project belongs to the domain of Artificial Intelligence (AI) in E‑Learning and Automated Assessment. It leverages technologies like machine learning, large language models (LLMs), and organized high‑quality educational content.
-              This enhances learning by personalizing study materials, tracking progress, and recommending relevant topics. In parallel, AI‑powered interview proctoring simulates real‑world evaluations, analyzing technical expertise.
+              Our website, AI-Powered E-Learning & Interview Proctor System, is an intelligent platform designed to make learning and skill evaluation easier, smarter, and more effective. It helps users explore various domains such as Artificial Intelligence, Machine Learning, Web Development, Cybersecurity, and more all in one place.
+The platform automatically gathers high-quality learning materials from trusted online sources and organizes them into structured modules. Learners can easily access tutorials, articles, and videos related to their chosen field. Personalized recommendations help users continue learning efficiently based on their progress and interests.
+A key highlight of the website is its AI Interview Proctor feature. This smart system conducts mock interviews by asking domain-specific questions, evaluating responses, and providing instant scores and feedback. It helps learners improve their technical knowledge, communication skills, and confidence before facing real interviews
             </p>
             <p>
               This domain bridges the gap between online learning and job readiness by ensuring learners are equipped with knowledge and practical competencies.

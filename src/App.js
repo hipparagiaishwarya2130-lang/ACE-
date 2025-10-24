@@ -120,6 +120,9 @@ function AppContent() {
               </>
             )}
           </nav>
+          {mobileMenuOpen && (
+            <div className="mobile-nav-backdrop" onClick={closeMobileMenu} />
+          )}
         </div>
       </header>
       <main className="app-main">

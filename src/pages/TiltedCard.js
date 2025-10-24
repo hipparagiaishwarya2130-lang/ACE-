@@ -55,6 +55,8 @@ function TiltedCard({
         position: 'relative',
         willChange: 'transform',
         transformStyle: 'preserve-3d',
+        display: 'grid',
+        placeItems: 'center',
         background: 'linear-gradient(135deg, rgba(108, 140, 255, 0.15), rgba(23,210,194,0.15))',
         boxShadow: '0 16px 40px rgba(0,0,0,0.25)',
       }}
@@ -64,7 +66,6 @@ function TiltedCard({
         src={imageSrc}
         alt={altText}
         style={{
-          width: imageWidth,
           height: imageHeight,
           objectFit: 'cover',
           display: 'block',
