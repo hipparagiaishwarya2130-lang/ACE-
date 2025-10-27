@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -6,13 +6,19 @@ import './Home.css';
 import { useAuth } from '../context/AuthContext';
 import CourseRecommendations from '../components/CourseRecommendations';
 import skillImg from '../Images/skill.jpg';
-import interviewImg from '../Images/interview.png';
 import reactImg from '../Images/react.png';
 import nodejsImg from '../Images/nodejs.jpeg';
 import nextImg from '../Images/next.jpeg';
 import mongoImg from '../Images/mangodb.png';
-import machineImg from '../Images/machine.jpeg';
+import aimlImg from '../Images/aiml.jpg';
+import cyberImg from '../Images/cyber.jpg';
+import ccImg from '../Images/cc.jpg';
+import webImg from '../Images/web.jpg';
+import datascienceImg from '../Images/datascience.jpg';
+import interviewImg from '../Images/interview.png';
+
 gsap.registerPlugin(ScrollTrigger);
+
 
 // Minimal inline LogoLoop (marquee) component powered by requestAnimationFrame
 function LogoLoop({ logos, speed = 120, logoHeight = 28, gap = 32, ariaLabel = 'Partner logos' }) {
@@ -73,6 +79,87 @@ function LogoLoop({ logos, speed = 120, logoHeight = 28, gap = 32, ariaLabel = '
         ))}
       </div>
     </div>
+  );
+}
+
+function DashboardHome() {
+  const [data, setData] = useState({
+    enrolled: [],
+    perCourse: [],
+    totals: { enrolledCount: 0, totalCorrect: 0 },
+    streak: { currentStreak: 0, maxStreak: 0, lastActiveDate: null }
+  });
+
+  useEffect(() => {
+    try {
+      const enrolled = JSON.parse(localStorage.getItem('enrolledCourses') || '[]');
+      const perCourse = [];
+      let totalCorrect = 0;
+      Object.keys(localStorage).forEach((k) => {
+        if (k.startsWith('courseQuizProgress:')) {
+          const raw = JSON.parse(localStorage.getItem(k) || 'null');
+          if (!raw) return;
+          const courseId = k.split(':')[1];
+          const answers = raw.quizState?.answers || {};
+          const answeredCount = Object.keys(answers).length;
+          const submitted = !!raw.quizState?.submitted;
+          const score = Number(raw.quizState?.score || 0);
+          if (submitted) totalCorrect += score;
+          perCourse.push({ courseId, answeredCount, submitted, score, level: raw.selectedLevel || 'easy' });
+        }
+      });
+      const streakInfo = JSON.parse(localStorage.getItem('streakInfo') || 'null') || { currentStreak: 0, maxStreak: 0, lastActiveDate: null };
+      setData({
+        enrolled,
+        perCourse,
+        totals: { enrolledCount: enrolled.length, totalCorrect },
+        streak: streakInfo
+      });
+    } catch {}
+  }, []);
+
+  return (
+    <section style={{ width: '100%', padding: 0 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 12 }}>
+        <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 12, padding: 16 }}>
+          <div style={{ fontSize: 12, opacity: 0.8 }}>Courses Enrolled</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>{data.totals.enrolledCount}</div>
+        </div>
+        <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 12, padding: 16 }}>
+          <div style={{ fontSize: 12, opacity: 0.8 }}>Total Correct Answers</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>{data.totals.totalCorrect}</div>
+        </div>
+        <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 12, padding: 16 }}>
+          <div style={{ fontSize: 12, opacity: 0.8 }}>Current Streak</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>{data.streak.currentStreak || 0} days</div>
+        </div>
+        <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 12, padding: 16 }}>
+          <div style={{ fontSize: 12, opacity: 0.8 }}>Max Streak</div>
+          <div style={{ fontSize: 28, fontWeight: 800 }}>{data.streak.maxStreak || 0} days</div>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 16, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }}>
+        <div style={{ padding: 14, fontWeight: 800, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>Your Course Progress</div>
+        {data.perCourse.length === 0 ? (
+          <div style={{ padding: 14, color: 'var(--muted)' }}>No quiz progress yet. Open a course and try the quiz.</div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 12, padding: 14 }}>
+            {data.perCourse.map((p) => (
+              <div key={p.courseId} style={{ border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, padding: 12 }}>
+                <div style={{ fontWeight: 800, marginBottom: 4 }}>{p.courseId}</div>
+                <div style={{ fontSize: 13, opacity: 0.85 }}>Level: {p.level}</div>
+                <div style={{ fontSize: 13, opacity: 0.85 }}>Answered: {p.answeredCount}</div>
+                <div style={{ fontSize: 13, opacity: 0.85 }}>Last score: {p.submitted ? p.score : '—'}</div>
+                <div style={{ marginTop: 8 }}>
+                  <Link to={`/course-detail/${p.courseId}`} className="btn btnGhost" style={{ padding: '6px 10px' }}>Continue</Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -490,8 +577,6 @@ function Home() {
                 }}>WELCOME </div>
               ) : (
                 <>
-                  <Link to="/login" className="btn btnPrimary btnAnimated" aria-label="Go to Login">Login</Link>
-                  <Link to="/signup" className="btn btnSecondary btnAnimated" aria-label="Go to Signup">Sign Up</Link>
                   <Link
                     to="/team"
                     className="btn btnSecondary btnAnimated"
@@ -576,7 +661,7 @@ function Home() {
               ) : (
                 <>
                   <Link 
-                    to="/signup" 
+                    to="/features" 
                     style={{
                       padding: '12px 24px',
                       borderRadius: '8px',
@@ -590,24 +675,7 @@ function Home() {
                       border: 'none'
                     }}
                   >
-                    Get Started
-                  </Link>
-                  <Link 
-                    to="/login" 
-                    style={{
-                      padding: '12px 24px',
-                      borderRadius: '8px',
-                      fontWeight: '600',
-                      transition: 'all 0.2s ease',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      background: 'rgba(255, 255, 255, 0.08)',
-                      color: 'var(--text)',
-                      border: '1px solid rgba(255, 255, 255, 0.12)'
-                    }}
-                  >
-                    I already have an account
+                    Explore Features
                   </Link>
                 </>
               )}
@@ -891,15 +959,15 @@ A key highlight of the website is its AI Interview Proctor feature. This smart s
           <h2 style={{ fontSize: '2rem', marginBottom: '24px', background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Browse Categories</h2>
           <div className="categories-grid">
             {[
-              { title: 'AI & ML', link: '/features' },
-              { title: 'Web Development', link: '/courses' },
-              { title: 'Data Science', link: '/features' },
-              { title: 'Cybersecurity', link: '/features' },
-              { title: 'Cloud', link: '/features' },
-              { title: 'Interview Prep', link: '/interview-practice' },
+              { title: 'AI & ML', link: '/features', img: aimlImg, alt: 'AI & ML' },
+              { title: 'Web Development', link: '/courses', img: webImg, alt: 'Web Development' },
+              { title: 'Data Science', link: '/features', img: datascienceImg, alt: 'Data Science' },
+              { title: 'Cybersecurity', link: '/features', img: cyberImg, alt: 'Cybersecurity' },
+              { title: 'Cloud', link: '/features', img: ccImg, alt: 'Cloud' },
+              { title: 'Interview Prep', link: '/interview-practice', img: interviewImg, alt: 'Interview Preparation' },
             ].map((c) => (
               <Link key={c.title} to={c.link} className="category-card">
-                <div className="category-bg" />
+                <img src={c.img} alt={c.alt} className="category-bg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div className="category-title">{c.title}</div>
               </Link>
             ))}
@@ -919,7 +987,7 @@ A key highlight of the website is its AI Interview Proctor feature. This smart s
                     { src: nodejsImg, alt: 'Node.js' },
                     { src: nextImg, alt: 'Next.js' },
                     { src: mongoImg, alt: 'MongoDB' },
-                    { src: machineImg, alt: 'ML' },
+                    { src: aimlImg, alt: 'ML' },
                   ]}
                   speed={80}
                   logoHeight={32}
@@ -927,10 +995,11 @@ A key highlight of the website is its AI Interview Proctor feature. This smart s
                   ariaLabel="Starter Tracks technologies"
                 />
               </div>
-              <div className="collection-overlay">
+              <div className="collection-overlay" style={{ position: 'relative', zIndex: 2 }}>
                 <div className="collection-title">Starter Tracks</div>
                 <div className="collection-sub">Kickstart your journey</div>
               </div>
+
             </Link>
             <Link 
               to="/features" 
@@ -1038,15 +1107,8 @@ export function AuthHome() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gap: 16 }}>
-            <div style={{ background: 'linear-gradient(180deg, rgba(23,210,194,0.08), rgba(108,140,255,0.08))', border: '1px solid rgba(108,140,255,0.25)', borderRadius: 16, padding: 20 }}>
-              <div style={{ fontWeight: 800, marginBottom: 6 }}>Quick actions</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                <Link to="/domain-selection" className="btn btnGhost" style={{ textAlign: 'center' }}>Choose Domain</Link>
-                <Link to="/profile" className="btn btnGhost" style={{ textAlign: 'center' }}>My Profile</Link>
-              </div>
-            </div>
-
+          <div style={{ padding: 0, marginTop: 8 }}>
+            <DashboardHome />
           </div>
         </div>
       </div>

@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useAuth } from '../context/AuthContext';
-import DomainSelection from '../components/DomainSelection';
-import CourseRecommendations from '../components/CourseRecommendations';
- 
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -215,7 +213,6 @@ function Login () {
           >
             {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
-          <Link to="/signup" className="link">Create an account</Link>
         </div>
       </form>
     </div>

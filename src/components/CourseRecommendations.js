@@ -8,7 +8,7 @@ import reactImg from '../Images/react.png';
 import nodejsImg from '../Images/nodejs.jpeg';
 import nextImg from '../Images/next.jpeg';
 import mongoImg from '../Images/mangodb.png';
-import machineImg from '../Images/machine.jpeg';
+import aimlImg from '../Images/aiml.jpg';
 // Main component function
 function CourseRecommendationsSimple() { return null; }
 
@@ -455,7 +455,7 @@ const categoryImages = {
   'web-development': reactImg,
   'backend-development': nodejsImg,
   'fullstack-development': nextImg,
-  'machine-learning': machineImg,
+  'machine-learning': aimlImg,
   'database': mongoImg
 };
 const getCategoryImage = (key) => categoryImages[key] || courseImage;
@@ -505,19 +505,19 @@ const CourseRecommendations = () => {
       </div>
 
       <div style={{
-        width: '100%',
-        maxWidth: 1200,
-        margin: '0 auto',
-        padding: '0 24px 24px',
+        width: '100vw',
+        minHeight: '100vh',
+        margin: 0,
+        padding: 0,
       }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: 16
+          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+          gap: 24
         }}>
           {/* Frontend */}
           <div className="card" style={{ padding: 20, display: 'grid', gap: 8 }}>
-            <img src={reactImg} alt="React" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 160 }} />
+            <img src={reactImg} alt="React" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 260 }} />
             <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Frontend Development</h2>
             <p style={{ margin: 0, color: 'var(--muted)' }}>React.js fundamentals and modern UI patterns.</p>
             <div style={{ fontSize: 14, color: 'var(--muted)' }}>
@@ -573,7 +573,7 @@ const CourseRecommendations = () => {
 
           {/* Machine Learning */}
           <div className="card" style={{ padding: 20, display: 'grid', gap: 8 }}>
-            <img src={machineImg} alt="Machine Learning" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 160 }} />
+            <img src={aimlImg} alt="Machine Learning" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 160 }} />
             <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Machine Learning</h2>
             <p style={{ margin: 0, color: 'var(--muted)' }}>Python, NumPy, Pandas, and ML basics.</p>
             <div style={{ fontSize: 14, color: 'var(--muted)' }}>
@@ -582,6 +582,20 @@ const CourseRecommendations = () => {
             </div>
             <div>
               <Link to="/course-detail/ml-basics" className="btn btnPrimary" style={{ display: 'inline-block' }}>View details</Link>
+            </div>
+          </div>
+
+          {/* Python */}
+          <div className="card" style={{ padding: 20, display: 'grid', gap: 8 }}>
+            <img src={courseImage} alt="Python" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 160 }} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Python Programming</h2>
+            <p style={{ margin: 0, color: 'var(--muted)' }}>Core Python: syntax, variables, types, flow control, and functions.</p>
+            <div style={{ fontSize: 14, color: 'var(--muted)' }}>
+              <span>Duration: 6 weeks</span> {' '}
+              <span>• Difficulty: Beginner</span>
+            </div>
+            <div>
+              <Link to="/course-detail/python-basics" className="btn btnPrimary" style={{ display: 'inline-block' }}>View details</Link>
             </div>
           </div>
         </div>

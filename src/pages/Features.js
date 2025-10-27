@@ -92,8 +92,7 @@ function Features() {
               Experience the future of education with AI-powered personalization, realistic interview practice, and comprehensive skill assessment
             </p>
             <div className="features-cta" data-fade>
-              <Link to="/signup" className="btn btnPrimary">Start Free Trial</Link>
-              <Link to="/interview-practice" className="btn btnGhost">Try AI Interview</Link>
+              <Link to="/interview-practice" className="btn btnPrimary">Try AI Interview</Link>
               <Link to="/domain-selection" className="btn btnSecondary">Select the Domain</Link>
             </div>
           </div>
@@ -309,8 +308,7 @@ function Features() {
             <h2>Ready to Transform Your Learning?</h2>
             <p>Join thousands of learners who have successfully bridged the gap between education and career success</p>
             <div className="cta-buttons">
-              <Link to="/signup" className="btn btnPrimary">Start Your Journey</Link>
-              <Link to="/about" className="btn btnGhost">Learn More</Link>
+              <Link to="/about" className="btn btnPrimary">Learn More</Link>
             </div>
           </div>
         </div>

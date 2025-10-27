@@ -294,8 +294,7 @@ function InterviewPractice() {
             <h2>Ready to Ace Your Next Interview?</h2>
             <p>Join thousands of professionals who have improved their interview skills with our AI system</p>
             <div className="cta-buttons">
-              <Link to="/signup" className="btn btnPrimary">Create Free Account</Link>
-              <Link to="/features" className="btn btnGhost">View Features</Link>
+              <Link to="/features" className="btn btnPrimary">View Features</Link>
             </div>
           </div>
         </div>
