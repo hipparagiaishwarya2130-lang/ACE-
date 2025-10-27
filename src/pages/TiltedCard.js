@@ -66,6 +66,7 @@ function TiltedCard({
         src={imageSrc}
         alt={altText}
         style={{
+          width: '100%',
           height: imageHeight,
           objectFit: 'cover',
           display: 'block',

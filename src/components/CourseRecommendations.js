@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { Link } from 'react-router-dom';
-import ScrollStack, { ScrollStackItem } from './ScrollStack';
+// Removed ScrollStack animations for a simpler static layout
+// import ScrollStack, { ScrollStackItem } from './ScrollStack';
 import courseImage from './img.jpg';
 import reactImg from '../Images/react.png';
 import nodejsImg from '../Images/nodejs.jpeg';
@@ -499,235 +500,92 @@ const CourseRecommendations = () => {
             color: 'var(--muted)'
           }}
         >
-          Scroll Down to Explore Courses and Start Learning Now.
+          Explore featured courses and start learning now.
         </p>
       </div>
 
-      <ScrollStack 
-        className="course-scroll-stack"
-        itemDistance={120}
-        itemStackDistance={32}
-        baseScale={0.92}
-        scaleEndPosition="20%"
-      >
-
-      <ScrollStackItem itemClassName="welcome-card">
-        <div>
-          <h2 style={{ margin: 0 }}>Frontend Development</h2>
-          <p style={{ marginTop: 8 }}>React.js fundamentals and modern UI patterns.</p>
-          <div style={{ marginTop: 8, fontSize: 14, color: 'var(--muted)' }}>
-            <span>Duration: 6–8 weeks</span> {' '}
-            <span>• Difficulty: Beginner → Intermediate</span>
-          </div>
-
-          <div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr', gap: 8 }}>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Easy</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>HTML5 semantic structure</li>
-                <li>CSS3 basics, Flexbox, responsive units</li>
-                <li>JavaScript ES6 essentials, DOM events</li>
-              </ul>
+      <div style={{
+        width: '100%',
+        maxWidth: 1200,
+        margin: '0 auto',
+        padding: '0 24px 24px',
+      }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: 16
+        }}>
+          {/* Frontend */}
+          <div className="card" style={{ padding: 20, display: 'grid', gap: 8 }}>
+            <img src={reactImg} alt="React" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 160 }} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Frontend Development</h2>
+            <p style={{ margin: 0, color: 'var(--muted)' }}>React.js fundamentals and modern UI patterns.</p>
+            <div style={{ fontSize: 14, color: 'var(--muted)' }}>
+              <span>Duration: 6–8 weeks</span> {' '}
+              <span>• Difficulty: Beginner → Intermediate</span>
             </div>
             <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Intermediate</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>React components, props, state</li>
-                <li>Hooks: useState, useEffect</li>
-                <li>Routing with React Router</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Advanced</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Performance: memo, useMemo, useCallback</li>
-                <li>State management patterns</li>
-                <li>Testing with Jest + RTL</li>
-              </ul>
+              <Link to="/course-detail/react-fundamentals" className="btn btnPrimary" style={{ display: 'inline-block' }}>View details</Link>
             </div>
           </div>
 
-          <div style={{ marginTop: 12 }}>
-            <Link to="/course-detail/react-fundamentals" className="nav-link">View details</Link>
+          {/* Backend */}
+          <div className="card" style={{ padding: 20, display: 'grid', gap: 8 }}>
+            <img src={nodejsImg} alt="Node.js" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 160 }} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Backend Development</h2>
+            <p style={{ margin: 0, color: 'var(--muted)' }}>Node.js and Express API fundamentals.</p>
+            <div style={{ fontSize: 14, color: 'var(--muted)' }}>
+              <span>Duration: 8–10 weeks</span> {' '}
+              <span>• Difficulty: Beginner → Intermediate</span>
+            </div>
+            <div>
+              <Link to="/course-detail/backend-basics" className="btn btnPrimary" style={{ display: 'inline-block' }}>View details</Link>
+            </div>
+          </div>
+
+          {/* Full Stack */}
+          <div className="card" style={{ padding: 20, display: 'grid', gap: 8 }}>
+            <img src={nextImg} alt="Next.js" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 160 }} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Full Stack Development</h2>
+            <p style={{ margin: 0, color: 'var(--muted)' }}>Next.js essentials for SSR/SSG and APIs.</p>
+            <div style={{ fontSize: 14, color: 'var(--muted)' }}>
+              <span>Duration: 12–16 weeks</span> {' '}
+              <span>• Difficulty: Intermediate → Advanced</span>
+            </div>
+            <div>
+              <Link to="/course-detail/fullstack-basics" className="btn btnPrimary" style={{ display: 'inline-block' }}>View details</Link>
+            </div>
+          </div>
+
+          {/* Database */}
+          <div className="card" style={{ padding: 20, display: 'grid', gap: 8 }}>
+            <img src={mongoImg} alt="MongoDB" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 160 }} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Database Management</h2>
+            <p style={{ margin: 0, color: 'var(--muted)' }}>MongoDB data modeling and CRUD.</p>
+            <div style={{ fontSize: 14, color: 'var(--muted)' }}>
+              <span>Duration: 6–8 weeks</span> {' '}
+              <span>• Difficulty: Beginner → Intermediate</span>
+            </div>
+            <div>
+              <Link to="/course-detail/backend-basics" className="btn btnPrimary" style={{ display: 'inline-block' }}>View details</Link>
+            </div>
+          </div>
+
+          {/* Machine Learning */}
+          <div className="card" style={{ padding: 20, display: 'grid', gap: 8 }}>
+            <img src={machineImg} alt="Machine Learning" style={{ width: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 160 }} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Machine Learning</h2>
+            <p style={{ margin: 0, color: 'var(--muted)' }}>Python, NumPy, Pandas, and ML basics.</p>
+            <div style={{ fontSize: 14, color: 'var(--muted)' }}>
+              <span>Duration: 8–10 weeks</span> {' '}
+              <span>• Difficulty: Beginner → Intermediate</span>
+            </div>
+            <div>
+              <Link to="/course-detail/ml-basics" className="btn btnPrimary" style={{ display: 'inline-block' }}>View details</Link>
+            </div>
           </div>
         </div>
-        <img src={reactImg} alt="React" />
-      </ScrollStackItem>
-
-      <ScrollStackItem itemClassName="welcome-card">
-        <div>
-          <h2 style={{ margin: 0 }}>Backend Development</h2>
-          <p style={{ marginTop: 8 }}>Node.js and Express API fundamentals.</p>
-          <div style={{ marginTop: 8, fontSize: 14, color: 'var(--muted)' }}>
-            <span>Duration: 8–10 weeks</span> {' '}
-            <span>• Difficulty: Beginner → Intermediate</span>
-          </div>
-
-          <div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr', gap: 8 }}>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Easy</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Node.js basics, npm, modules</li>
-                <li>Express routing and middleware</li>
-                <li>REST fundamentals and Postman</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Intermediate</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Authentication with JWT</li>
-                <li>Databases: MongoDB and PostgreSQL CRUD</li>
-                <li>Error handling and logging</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Advanced</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Rate limiting, caching, security headers</li>
-                <li>Scalability: clustering, load testing</li>
-                <li>CI/CD and deployment basics</li>
-              </ul>
-            </div>
-          </div>
-
-          <div style={{ marginTop: 12 }}>
-            <Link to="/course-detail/backend-basics" className="nav-link">View details</Link>
-          </div>
-        </div>
-        <img src={nodejsImg} alt="Node.js" />
-      </ScrollStackItem>
-
-      <ScrollStackItem itemClassName="welcome-card">
-        <div>
-          <h2 style={{ margin: 0 }}>Full Stack Development</h2>
-          <p style={{ marginTop: 8 }}>Next.js essentials for SSR/SSG and APIs.</p>
-          <div style={{ marginTop: 8, fontSize: 14, color: 'var(--muted)' }}>
-            <span>Duration: 12–16 weeks</span> {' '}
-            <span>• Difficulty: Intermediate → Advanced</span>
-          </div>
-
-          <div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr', gap: 8 }}>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Easy</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Frontend fundamentals (HTML/CSS/JS)</li>
-                <li>Basic React app with routing</li>
-                <li>Intro to REST APIs</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Intermediate</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Next.js pages, SSR/SSG, API routes</li>
-                <li>State management patterns</li>
-                <li>Database integration (ORM, migrations)</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Advanced</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Auth (JWT/OAuth), role-based access</li>
-                <li>Serverless and edge deployment</li>
-                <li>Performance, caching, observability</li>
-              </ul>
-            </div>
-          </div>
-
-          <div style={{ marginTop: 12 }}>
-            <Link to="/course-detail/fullstack-basics" className="nav-link">View details</Link>
-          </div>
-        </div>
-        <img src={nextImg} alt="Next.js" />
-      </ScrollStackItem>
-
-      <ScrollStackItem itemClassName="welcome-card">
-        <div>
-          <h2 style={{ margin: 0 }}>Database Management</h2>
-          <p style={{ marginTop: 8 }}>MongoDB data modeling and CRUD.</p>
-          <div style={{ marginTop: 8, fontSize: 14, color: 'var(--muted)' }}>
-            <span>Duration: 6–8 weeks</span> {' '}
-            <span>• Difficulty: Beginner → Intermediate</span>
-          </div>
-
-          <div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr', gap: 8 }}>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Easy</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Database concepts: collections, documents, tables</li>
-                <li>MongoDB CRUD with Compass and drivers</li>
-                <li>Basic indexing and schema design</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Intermediate</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Aggregation pipelines</li>
-                <li>Transactions and data validation</li>
-                <li>Backup/restore and migrations</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Advanced</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Sharding/replication and high availability</li>
-                <li>Performance tuning and profiling</li>
-                <li>Security: roles, encryption, auditing</li>
-              </ul>
-            </div>
-          </div>
-
-          <div style={{ marginTop: 12 }}>
-            <Link to="/course-detail/backend-basics" className="nav-link">View details</Link>
-          </div>
-        </div>
-        <img src={mongoImg} alt="MongoDB" />
-      </ScrollStackItem>
-
-      <ScrollStackItem itemClassName="welcome-card">
-        <div>
-          <h2 style={{ margin: 0 }}>Machine Learning</h2>
-          <p style={{ marginTop: 8 }}>Python, NumPy, Pandas, and ML basics.</p>
-          <div style={{ marginTop: 8, fontSize: 14, color: 'var(--muted)' }}>
-            <span>Duration: 8–10 weeks</span> {' '}
-            <span>• Difficulty: Beginner → Intermediate</span>
-          </div>
-
-          <div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr', gap: 8 }}>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Easy</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Python syntax, NumPy arrays</li>
-                <li>Pandas dataframes and cleaning</li>
-                <li>Basic EDA and visualization</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Intermediate</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Modeling with scikit-learn (regression/classification)</li>
-                <li>Feature engineering and evaluation metrics</li>
-                <li>Train/validation/test splits and cross‑validation</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ margin: '8px 0 4px' }}>Advanced</h4>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Neural networks intro (TensorFlow/Keras)</li>
-                <li>Experiment tracking and model monitoring</li>
-                <li>Deployment basics and inference optimization</li>
-              </ul>
-            </div>
-          </div>
-
-          <div style={{ marginTop: 12 }}>
-            <Link to="/course-detail/ml-basics" className="nav-link">View details</Link>
-          </div>
-        </div>
-        <img src={machineImg} alt="Machine Learning" />
-      </ScrollStackItem>
-
-
-      </ScrollStack>
+      </div>
     </>
   );
 };

@@ -4,9 +4,77 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Home.css';
 import { useAuth } from '../context/AuthContext';
-import EashwarImg from '../Images/Eashwar.jpg';
-import aniImg from '../Images/ani.jpg';
+import CourseRecommendations from '../components/CourseRecommendations';
+import skillImg from '../Images/skill.jpg';
+import interviewImg from '../Images/interview.png';
+import reactImg from '../Images/react.png';
+import nodejsImg from '../Images/nodejs.jpeg';
+import nextImg from '../Images/next.jpeg';
+import mongoImg from '../Images/mangodb.png';
+import machineImg from '../Images/machine.jpeg';
 gsap.registerPlugin(ScrollTrigger);
+
+// Minimal inline LogoLoop (marquee) component powered by requestAnimationFrame
+function LogoLoop({ logos, speed = 120, logoHeight = 28, gap = 32, ariaLabel = 'Partner logos' }) {
+  const containerRef = React.useRef(null);
+  const trackRef = React.useRef(null);
+  const seqRef = React.useRef(null);
+  const [seqWidth, setSeqWidth] = React.useState(0);
+  const [copies, setCopies] = React.useState(2);
+  const rafRef = React.useRef(null);
+  const lastTsRef = React.useRef(null);
+  const offsetRef = React.useRef(0);
+
+  React.useEffect(() => {
+    const update = () => {
+      const cw = containerRef.current?.clientWidth || 0;
+      const sw = seqRef.current?.getBoundingClientRect?.().width || 0;
+      if (sw > 0) {
+        setSeqWidth(Math.ceil(sw));
+        setCopies(Math.max(2, Math.ceil(cw / sw) + 2));
+      }
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    if (containerRef.current) ro.observe(containerRef.current);
+    if (seqRef.current) ro.observe(seqRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  React.useEffect(() => {
+    const animate = (ts) => {
+      if (lastTsRef.current == null) lastTsRef.current = ts;
+      const dt = Math.max(0, ts - lastTsRef.current) / 1000;
+      lastTsRef.current = ts;
+      if (seqWidth > 0) {
+        offsetRef.current = (offsetRef.current + speed * dt) % seqWidth;
+        const tx = -offsetRef.current;
+        if (trackRef.current) trackRef.current.style.transform = `translate3d(${tx}px,0,0)`;
+      }
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); lastTsRef.current = null; };
+  }, [seqWidth, speed]);
+
+  const itemStyle = { height: logoHeight, width: 'auto', display: 'block', objectFit: 'contain', borderRadius: '25%' };
+
+  return (
+    <div ref={containerRef} role="region" aria-label={ariaLabel} style={{ position: 'relative', overflow: 'hidden', width: '100%' }}>
+      <div ref={trackRef} style={{ display: 'flex', width: 'max-content', willChange: 'transform' }}>
+        {Array.from({ length: copies }).map((_, copyIdx) => (
+          <ul key={copyIdx} ref={copyIdx === 0 ? seqRef : undefined} style={{ display: 'flex', alignItems: 'center', listStyle: 'none', margin: 0, padding: 0 }}>
+            {logos.map((l, i) => (
+              <li key={`${copyIdx}-${i}`} style={{ marginRight: gap, display: 'flex', alignItems: 'center' }}>
+                <img src={l.src} alt={l.alt || ''} style={itemStyle} draggable={false} />
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function Home() {
   const { isAuthenticated } = useAuth();
@@ -456,7 +524,7 @@ function Home() {
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '40px',
-            alignItems: 'center'
+            alignItems: 'start'
           }}
         >
           <div style={{ maxWidth: '540px' }}>
@@ -589,7 +657,7 @@ function Home() {
               style={{
                 width: '100%',
                 aspectRatio: '16/9',
-                background: 'rgba(255, 255, 255, 0.03)',
+                /* removed duplicate background key */
                 border: '1px solid rgba(255, 255, 255, 0.08)',
                 borderRadius: '16px',
                 overflow: 'hidden',
@@ -817,75 +885,6 @@ A key highlight of the website is its AI Interview Proctor feature. This smart s
         </div>
       </section>
 
-      <section 
-        id="team-section"
-        ref={addToSectionsRef}
-        style={{
-          padding: '80px 0',
-          position: 'relative'
-        }}
-      >
-        <div style={{
-          width: '100%',
-          maxWidth: '1200px',
-          margin: '0 auto',
-          padding: '0 24px'
-        }}>
-          <h2 style={{
-            fontSize: '2rem',
-            marginBottom: '30px',
-            background: 'var(--gradient)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            textAlign: 'center',
-            display: 'block'
-          }}>Our Team</h2>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-            gap: '20px'
-          }}>
-            {[
-              { name: 'Anirudh K', role: 'Backend Developer', photo: aniImg},
-              { name: 'Aishwarya H', role: 'Frontend Developer', photo:  EashwarImg },
-              { name: 'Eashwar D', role: 'Frontend Developer', photo:  EashwarImg},
-              { name: 'Godeshwari C', role: 'Product Designer', photo:  EashwarImg },
-            ].map((m) => (
-              <div ref={addToCardsRef} key={m.name} style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '16px',
-                padding: '20px',
-                textAlign: 'center', 
-                willChange: 'transform',
-                transformStyle: 'preserve-3d'
-              }}>
-                <div style={{
-                  width: '80px',
-                  height: '80px',
-                  margin: '0 auto 12px',
-                  borderRadius: '50%',
-                  overflow: 'hidden',
-                  background: 'linear-gradient(135deg, rgba(108, 140, 255, 0.25), rgba(23,210,194,0.25))',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  {m.photo ? (
-                    <img src={m.photo} alt={m.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  ) : (
-                    <span style={{ fontWeight: 700 }}>{m.name.split(' ').map(p => p[0]).join('').slice(0,2)}</span>
-                  )}
-                </div>
-                <div style={{ fontWeight: 700, marginBottom: 4 }}>{m.name}</div>
-                <div style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>{m.role}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section ref={addToSectionsRef} style={{ padding: '80px 0', position: 'relative', background: 'linear-gradient(180deg, rgba(255,255,255,0.02), transparent)' }}>
         <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
@@ -912,18 +911,49 @@ A key highlight of the website is its AI Interview Proctor feature. This smart s
         <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
           <h2 style={{ fontSize: '2rem', marginBottom: '24px', background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Featured Collections</h2>
           <div className="collections-grid">
-            <Link to="/courses" className="collection-card large">
+            <Link to="/courses" className="collection-card large" style={{ position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 8, left: 8, right: 8, display: 'flex', justifyContent: 'center' }}>
+                <LogoLoop 
+                  logos={[
+                    { src: reactImg, alt: 'React' },
+                    { src: nodejsImg, alt: 'Node.js' },
+                    { src: nextImg, alt: 'Next.js' },
+                    { src: mongoImg, alt: 'MongoDB' },
+                    { src: machineImg, alt: 'ML' },
+                  ]}
+                  speed={80}
+                  logoHeight={32}
+                  gap={28}
+                  ariaLabel="Starter Tracks technologies"
+                />
+              </div>
               <div className="collection-overlay">
                 <div className="collection-title">Starter Tracks</div>
                 <div className="collection-sub">Kickstart your journey</div>
               </div>
             </Link>
-            <Link to="/features" className="collection-card small">
+            <Link 
+              to="/features" 
+              className="collection-card small"
+              style={{ 
+                backgroundImage: `linear-gradient(135deg, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url(${skillImg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            >
               <div className="collection-overlay">
                 <div className="collection-title">Skill Boosters</div>
               </div>
             </Link>
-            <Link to="/interview-practice" className="collection-card small">
+            <Link 
+              to="/interview-practice" 
+              className="collection-card small"
+              style={{ 
+                backgroundImage: `linear-gradient(135deg, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url(${interviewImg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            >
               <div className="collection-overlay">
                 <div className="collection-title">Mock Interviews</div>
               </div>
@@ -1014,21 +1044,14 @@ export function AuthHome() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 <Link to="/domain-selection" className="btn btnGhost" style={{ textAlign: 'center' }}>Choose Domain</Link>
                 <Link to="/profile" className="btn btnGhost" style={{ textAlign: 'center' }}>My Profile</Link>
-                <Link to="/assessment" className="btn btnGhost" style={{ textAlign: 'center' }}>Assessment</Link>
-                <Link to="/career-guidance" className="btn btnGhost" style={{ textAlign: 'center' }}>Career Guidance</Link>
               </div>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 20 }}>
-              <div style={{ fontWeight: 800, marginBottom: 6 }}>Recommendations</div>
-              <p style={{ color: 'var(--muted)', marginTop: 0 }}>Explore popular tracks and practice sets tailored for you.</p>
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                <Link to="/courses" className="btn btnPrimary btnAnimated">All Courses</Link>
-                <Link to="/interview-practice" className="btn btnGhost">Mock Interview</Link>
-              </div>
-            </div>
           </div>
         </div>
+      </div>
+      <div style={{ marginTop: 24 }}>
+        <CourseRecommendations />
       </div>
     </div>
   );

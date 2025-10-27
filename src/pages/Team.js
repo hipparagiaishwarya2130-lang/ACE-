@@ -89,9 +89,9 @@ function Team() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
             gap: '24px',
-            justifyItems: 'center',
+            placeItems: 'center',
           }}
         >
           {teamMembers.map((member) => (
@@ -107,40 +107,45 @@ function Team() {
                 width: '100%',
                 maxWidth: '300px',
                 transition: 'transform 0.3s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
               }}
             >
-              <TiltedCard
-                imageSrc={member.photo}
-                altText={member.name}
-                captionText={member.name}
-                containerHeight="260px"
-                containerWidth="260px"
-                imageHeight="260px"
-                imageWidth="260px"
-                rotateAmplitude={14}
-                scaleOnHover={1.15}
-                showTooltip={false}
-                displayOverlayContent={true}
-                overlayContent={
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '10px',
-                      left: 0,
-                      right: 0,
-                      textAlign: 'center',
-                      color: 'white',
-                      fontWeight: 600,
-                      textShadow: '0 2px 8px rgba(0,0,0,0.6)',
-                    }}
-                  >
-                    {member.name}
-                  </div>
-                }
-              />
+              <div style={{ margin: '0 auto' }}>
+                <TiltedCard
+                  imageSrc={member.photo}
+                  altText={member.name}
+                  captionText={member.name}
+                  containerHeight="260px"
+                  containerWidth="260px"
+                  imageHeight="260px"
+                  imageWidth="260px"
+                  rotateAmplitude={14}
+                  scaleOnHover={1.15}
+                  showTooltip={false}
+                  displayOverlayContent={true}
+                  overlayContent={
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: '10px',
+                        left: 0,
+                        right: 0,
+                        textAlign: 'center',
+                        color: 'white',
+                        fontWeight: 600,
+                        textShadow: '0 2px 8px rgba(0,0,0,0.6)',
+                      }}
+                    >
+                      {member.name}
+                    </div>
+                  }
+                />
+              </div>
 
-              <div style={{ fontWeight: 700, marginTop: '16px' }}>{member.name}</div>
-              <div style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>{member.role}</div>
+              <div style={{ fontWeight: 700, marginTop: '16px', textAlign: 'center' }}>{member.name}</div>
+              <div style={{ color: 'var(--muted)', fontSize: '0.95rem', textAlign: 'center' }}>{member.role}</div>
             </div>
           ))}
         </div>

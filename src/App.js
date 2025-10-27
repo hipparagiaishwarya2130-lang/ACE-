@@ -19,6 +19,7 @@ import TiltedCard from './pages/TiltedCard';
 
 function EnrolledProfile() {
   const [enrolled, setEnrolled] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     try {
@@ -29,8 +30,54 @@ function EnrolledProfile() {
     }
   }, []);
 
+  const initials = user?.name
+    ? user.name.trim().split(/\s+/).map(p => p[0]).join('').slice(0,2).toUpperCase()
+    : 'U';
+
   return (
     <div className="container" style={{ padding: '40px 0' }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        gap: 16,
+        marginBottom: 20
+      }}>
+        <div style={{
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: 16,
+          padding: 20,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 16
+        }}>
+          <div style={{
+            width: 56,
+            height: 56,
+            borderRadius: 12,
+            background: 'var(--gradient)',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 800,
+            letterSpacing: 0.5
+          }}>{initials}</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 800, fontSize: '1.05rem' }}>{user?.name || 'User'}</div>
+            <div style={{ color: 'var(--muted)', fontSize: '.95rem' }}>{user?.email || ''}</div>
+          </div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            {user?.level && (
+              <span style={{ padding: '6px 10px', background: 'rgba(108,140,255,0.12)', borderRadius: 8, fontSize: 12 }}>Level: {user.level}</span>
+            )}
+            {typeof user?.streak === 'number' && (
+              <span style={{ padding: '6px 10px', background: 'rgba(23,210,194,0.12)', borderRadius: 8, fontSize: 12 }}>Streak: {user.streak}d</span>
+            )}
+          </div>
+        </div>
+      </div>
+
       <h1 style={{
         fontSize: '2rem',
         marginBottom: '20px',
